@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: fcfs
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  profiles:
+    active: dev
