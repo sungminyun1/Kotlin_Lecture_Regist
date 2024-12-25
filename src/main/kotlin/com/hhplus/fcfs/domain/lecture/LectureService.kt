@@ -1,10 +1,12 @@
 package com.hhplus.fcfs.domain.lecture
 
 import com.hhplus.fcfs.domain.lecture.dto.LectureEnrollSerReq
-import com.hhplus.fcfs.domain.lecture.dto.LectureEnrollSerRes
+import com.hhplus.fcfs.domain.lecture.dto.LectureSerRes
 import com.hhplus.fcfs.domain.member.MemberRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class LectureService(
@@ -14,7 +16,7 @@ class LectureService(
     @Transactional
     fun enrollLecture(
         request: LectureEnrollSerReq
-    ): LectureEnrollSerRes {
+    ): LectureSerRes {
         val member = memberRepository.findById(request.userId)
             ?: throw IllegalArgumentException("Cannot find user with id ${request.userId}")
 
@@ -23,6 +25,19 @@ class LectureService(
 
         targetLecture.enroll(member)
 
-        return LectureEnrollSerRes.from(member, targetLecture)
+        return LectureSerRes.from(targetLecture)
+    }
+
+    @Transactional
+    fun getLecturesByDate(
+        targetDate: LocalDateTime
+    ): List<LectureSerRes> {
+        val startOfDay = targetDate.toLocalDate().atStartOfDay()
+
+        val endOfDay = startOfDay.plusDays(1)
+
+        val responses = lectureRepository.findAllByDateTimeBetween(startOfDay, endOfDay)
+
+        return responses.map { LectureSerRes.from(it) }
     }
 }

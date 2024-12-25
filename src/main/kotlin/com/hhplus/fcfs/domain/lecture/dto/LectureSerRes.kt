@@ -3,19 +3,19 @@ package com.hhplus.fcfs.domain.lecture.dto
 import com.hhplus.fcfs.domain.lecture.Lecture
 import com.hhplus.fcfs.domain.member.Member
 
-data class LectureEnrollSerRes(
-    val userId: Long,
+data class LectureSerRes(
     val lectureId: Long,
     val lectureName: String,
-    val teacherName: String
+    val teacherName: String,
+    val capacity: Int
 ){
     companion object {
-        fun from(user: Member, lecture: Lecture): LectureEnrollSerRes {
-            return LectureEnrollSerRes(
-                userId = user.id!!,
+        fun from(lecture: Lecture): LectureSerRes {
+            return LectureSerRes(
                 lectureId = lecture.id!!,
                 lectureName = lecture.name,
-                teacherName = lecture.teacher!!.name
+                teacherName = lecture.teacher!!.name,
+                capacity = lecture.capacity
             )
         }
     }

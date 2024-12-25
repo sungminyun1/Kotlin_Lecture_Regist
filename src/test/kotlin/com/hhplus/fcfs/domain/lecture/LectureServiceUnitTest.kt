@@ -7,11 +7,14 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
+import org.mockito.internal.matchers.Any
+import org.mockito.kotlin.any
 import org.mockito.kotlin.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.time.LocalDateTime
+import java.util.Date
 
 @SpringBootTest
 class LectureServiceUnitTest: FunSpec(){
@@ -30,6 +33,7 @@ class LectureServiceUnitTest: FunSpec(){
     lateinit var dummyStudent: Member
     lateinit var dummyTeacher: Member
     lateinit var dummyLecture: Lecture
+    lateinit var dummyLecture2: Lecture
 
     init {
         beforeEach {
@@ -50,6 +54,14 @@ class LectureServiceUnitTest: FunSpec(){
                 capacity = Lecture.MAX_CAPACITY,
                 datetime = LocalDateTime.of(2024,12,5,13,0)
             )
+
+            dummyLecture2 = Lecture(
+                id = 1,
+                teacher = dummyTeacher,
+                name = "Test Lecture2",
+                capacity = Lecture.MAX_CAPACITY,
+                datetime = LocalDateTime.of(2024,12,5,17,0)
+            )
         }
 
         test("사용자 id와 강의 id로 수강 신청을 한다"){
@@ -61,7 +73,6 @@ class LectureServiceUnitTest: FunSpec(){
             val result = lectureService.enrollLecture(request)
 
             result.lectureId shouldBe 1
-            result.userId shouldBe 2
             result.lectureName shouldBe "Test Lecture"
             result.teacherName shouldBe "Teacher"
             dummyLecture.members.size shouldBe 1
@@ -76,6 +87,15 @@ class LectureServiceUnitTest: FunSpec(){
 
             val exception = shouldThrow<IllegalStateException> { lectureService.enrollLecture(request) }
             exception.message shouldBe "수강신청 인원이 초과되었습니다"
+        }
+
+        test("강의 목록을 일자별로 조회할 수 있다"){
+            val reqDate = LocalDateTime.of(2024, 12, 25, 0, 0, 0)
+            given(lectureRepository.findAllByDateTimeBetween(any(), any())).willReturn(listOf(dummyLecture,dummyLecture2))
+
+            val responses = lectureService.getLecturesByDate(reqDate)
+
+            responses.size shouldBe 2
         }
 
     }

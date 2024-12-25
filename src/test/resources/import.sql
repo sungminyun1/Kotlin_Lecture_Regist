@@ -42,3 +42,5 @@ insert into member (id, name, created_at ) values (41, 'Student', NOW());
 
 
 insert into lecture (id, capacity, datetime, name, teacher_id, created_at) values (1, 30, '2024-12-25 00:00:00', 'Test Lecture', 1, NOW())
+insert into lecture (id, capacity, datetime, name, teacher_id, created_at) values (2, 0, '2024-12-25 12:00:00', 'Test Lecture2', 1, NOW())
+insert into lecture (id, capacity, datetime, name, teacher_id, created_at) values (3, 30, '2024-12-25 15:00:00', 'Test Lecture3', 1, NOW())

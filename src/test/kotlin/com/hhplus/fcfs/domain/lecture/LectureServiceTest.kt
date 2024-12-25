@@ -6,6 +6,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDateTime
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
@@ -22,7 +23,6 @@ class LectureServiceTest: FunSpec(), TestContainerSupporter {
             val result = lectureService.enrollLecture(request)
 
             result.lectureId shouldBe 1
-            result.userId shouldBe 2
             result.lectureName shouldBe "Test Lecture"
             result.teacherName shouldBe "Teacher"
         }
@@ -55,6 +55,16 @@ class LectureServiceTest: FunSpec(), TestContainerSupporter {
             doneLatch.await()
 
             failCount shouldBe 10
+        }
+
+        test("강의 목록을 일자별로 조회할 수 있다"){
+            val reqDate = LocalDateTime.of(2024, 12, 25, 0, 0, 0)
+
+            val responses = lectureService.getLecturesByDate(reqDate)
+
+            responses.size shouldBe 3
+            responses.get(2).capacity shouldBe 30
+            responses.get(1).capacity shouldBe 0
         }
     }
 }
