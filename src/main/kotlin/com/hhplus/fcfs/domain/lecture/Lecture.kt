@@ -15,7 +15,7 @@ class Lecture(
 
     val name: String,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     val teacher: Member?,
 

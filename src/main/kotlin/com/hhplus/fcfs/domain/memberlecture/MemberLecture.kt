@@ -3,11 +3,7 @@ package com.hhplus.fcfs.domain.memberlecture
 import com.hhplus.fcfs.domain.baseEntity.BaseEntity
 import com.hhplus.fcfs.domain.lecture.Lecture
 import com.hhplus.fcfs.domain.member.Member
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 
 @Entity
 class MemberLecture(
@@ -15,10 +11,10 @@ class MemberLecture(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     val lecture: Lecture,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     val member: Member,
 
     ): BaseEntity() {
