@@ -6,4 +6,6 @@ import com.hhplus.fcfs.domain.member.Member
 
 interface MemberLectureRepository {
     fun findAllByMember(member: Member): List<Lecture>
+
+    fun findByMemberAndLecture(member: Member, lecture: Lecture): MemberLecture?
 }
