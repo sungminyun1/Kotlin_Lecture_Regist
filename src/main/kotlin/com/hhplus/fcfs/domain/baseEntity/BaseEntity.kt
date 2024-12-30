@@ -18,6 +18,6 @@ abstract class BaseEntity {
     var createdAt: LocalDateTime? = null
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     var updatedAt: LocalDateTime? = null
 }
