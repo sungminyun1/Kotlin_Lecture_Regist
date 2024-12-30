@@ -14,4 +14,8 @@ class MemberLectureRepositoryImpl(
         return memberLectureJpaRepository.findAllByMember(member)
             .map { it.lecture }
     }
+
+    override fun findByMemberAndLecture(member: Member, lecture: Lecture): MemberLecture? {
+        return memberLectureJpaRepository.findByMemberAndLecture(member,lecture)
+    }
 }
